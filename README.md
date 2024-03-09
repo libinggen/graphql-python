@@ -47,16 +47,70 @@ $ python
 >>> db.session.commit()
 
 
+# Write your query or mutation here
 query AllPosts {
   listPosts {
     success
     errors
-    post {
+    posts {
       id
-      title 
+      title
       description
       created_at
     }
+  }
+}
+
+query GetPost {
+  getPost(id: "1") {
+    post {
+      id
+      title
+      description
+    }
+    success
+    errors
+  }
+}
+
+mutation CreateNewPost {
+  createPost(title: "New Blog Post", description: "Some Description") {
+    post {
+      id
+      title
+      description
+      created_at
+    }
+    success
+    errors
+  }
+}
+
+mutation UpdatePost {
+  updatePost(
+    id: "2"
+    title: "Hello title2"
+    description: "updated description"
+  ) {
+    post {
+      id
+      title
+      description
+    }
+    success
+    errors
+  }
+}
+
+mutation DeletePost{
+  deletePost(id: "5") {
+    post {
+      id
+      title
+      description
+    }
+    success
+    errors
   }
 }
 
