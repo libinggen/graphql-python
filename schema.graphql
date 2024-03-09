@@ -1,5 +1,10 @@
 schema {
     query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    createPost(title: String!, description: String!, created_at: String): PostResult!
 }
 
 type Post {
@@ -18,7 +23,7 @@ type PostResult {
 type PostsResult {
     success: Boolean!
     errors: [String]
-    post: [Post]
+    posts: [Post]
 }
 
 type Query {

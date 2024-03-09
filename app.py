@@ -11,17 +11,20 @@ from ariadne import load_schema_from_path, make_executable_schema, \
 from flask import request, jsonify
 from ariadne.explorer import ExplorerPlayground
 from api.queries import listPosts_resolver, getPost_resolver
-
+from api.mutations import create_post_resolver
 query = ObjectType("Query")
+mutation = ObjectType("Mutation")
 query.set_field("listPosts", listPosts_resolver)
 query.set_field("getPost", getPost_resolver)
-
-PLAYGROUND_HTML = ExplorerPlayground(title="Cool API").html(None)
+mutation.set_field("createPost", create_post_resolver)
 
 type_defs = load_schema_from_path("schema.graphql")
 schema = make_executable_schema(
-    type_defs, query, snake_case_fallback_resolvers
+    type_defs, query, mutation, snake_case_fallback_resolvers
 )
+
+PLAYGROUND_HTML = ExplorerPlayground(title="Cool API").html(None)
+
 @app.route("/graphql", methods=["GET"])
 def graphql_playground():
     return PLAYGROUND_HTML, 200
