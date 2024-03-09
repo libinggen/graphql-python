@@ -130,4 +130,7 @@ sudo lsof -i :3000
 
 sudo lsof -ti:3000 | xargs sudo kill -9
 
+cd frontedn
+npm start
+
 
