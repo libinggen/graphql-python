@@ -1,4 +1,6 @@
+// frontend/src/Component/PostList.js
 import { useQuery, gql } from "@apollo/client";
+import './PostList.css';
 
 const GET_POSTS = gql`
   query AllPosts {
@@ -22,11 +24,11 @@ export function PostList() {
   if (error) return <p>Error :(</p>;
 
   return (
-    <div>
+    <div className="posts-container">
       {data.listPosts.posts.map(({ id, title, description }) => (
-        <div key={id}>
-          <h3>{title}</h3>
-          <p>{description}</p>
+        <div key={id} className="post-item">
+          <h3 className="post-title">{title}</h3>
+          <p className="post-description">{description}</p> 
         </div>
       ))}
     </div>

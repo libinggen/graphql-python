@@ -1,4 +1,6 @@
+// frontend/src/Component/PostForm.js
 import { useMutation, gql } from '@apollo/client';
+import './PostForm.css'; 
 
 const CREATE_POST = gql`
   mutation CreatePost($title: String!, $description: String!) {
@@ -14,14 +16,18 @@ const CREATE_POST = gql`
 
 export function PostForm() {
   let titleInput, descriptionInput;
-  const [createPost, { data, loading, error }] = useMutation(CREATE_POST);
+  const [createPost, { data, loading, error }] = useMutation(CREATE_POST, {
+    refetchQueries: [
+      'AllPosts',
+    ],
+  });
 
   if (loading) return 'Submitting...';
   if (error) return `Submission error! ${error.message}`;
 
   return (
-    <div>
-      <form
+    <div> 
+      <form className="form-container"
         onSubmit={e => {
           e.preventDefault();
           createPost({ variables: { title: titleInput.value, description: descriptionInput.value } });
