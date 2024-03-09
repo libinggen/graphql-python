@@ -17,15 +17,13 @@ const CREATE_POST = gql`
 export function PostForm() {
   let titleInput, descriptionInput;
   //   const [createPost, { data, loading, error }] = useMutation(CREATE_POST, {
-  //     refetchQueries: [
-  //       'AllPosts',
-  //     ],
+  //     refetchQueries: ["AllPosts"],
   //   });
   const [createPost, { loading, error }] = useMutation(CREATE_POST, {
     update(cache, { data: { createPost } }) {
       cache.modify({
         fields: {
-          listPosts(existingPostsRefs = [], { readField }) {
+          listPosts(existingPostsData = { posts: [] }, { readField }) {
             const newPostRef = cache.writeFragment({
               data: createPost.post,
               fragment: gql`
@@ -36,14 +34,25 @@ export function PostForm() {
                 }
               `,
             });
-            if (
-              existingPostsRefs.some(
-                (ref) => readField("id", ref) === createPost.post.id
-              )
-            ) {
-              return existingPostsRefs;
+
+            const existingPostsRefs = existingPostsData.posts
+              ? existingPostsData.posts
+              : [];
+
+            const newPostAlreadyExists = existingPostsRefs.some(
+              (ref) => readField("id", ref) === createPost.post.id
+            );
+
+            if (newPostAlreadyExists) {
+              return existingPostsData;
             }
-            return [...existingPostsRefs, newPostRef];
+
+            const updatedPostsData = {
+              ...existingPostsData,
+              posts: [...existingPostsRefs, newPostRef],
+            };
+
+            return updatedPostsData; // Return updated data
           },
         },
       });
