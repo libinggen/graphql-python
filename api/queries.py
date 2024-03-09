@@ -1,4 +1,6 @@
 from .models import Post
+from ariadne import convert_kwargs_to_snake_case
+
 def listPosts_resolver(obj, info):
     try:
         posts = [post.to_dict() for post in Post.query.all()]
@@ -11,5 +13,21 @@ def listPosts_resolver(obj, info):
         payload = {
             "success": False,
             "errors": [str(error)]
+        }
+    return payload
+
+@convert_kwargs_to_snake_case
+def getPost_resolver(obj, info, id):
+    try:
+        post = Post.query.get(id)
+        print(post.id,post.title,post.description,post.created_at)
+        payload = {
+            "success": True,
+            "post": post.to_dict()
+        }
+    except AttributeError:  # todo not found
+        payload = {
+            "success": False,
+            "errors": ["Post item matching {id} not found"]
         }
     return payload
