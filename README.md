@@ -118,3 +118,16 @@ mutation DeletePost{
 
 
 ## frontend
+
+sudo npm cache clean --force
+
+brew update                  
+brew upgrade
+
+npx create-react-app frontend
+
+sudo lsof -i :3000
+
+sudo lsof -ti:3000 | xargs sudo kill -9
+
+
