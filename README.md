@@ -1,5 +1,7 @@
 # graphql-python
 
+## backend
+
 python3 --version
 
 virtualenv -p python3.9 venv
@@ -115,3 +117,4 @@ mutation DeletePost{
 }
 
 
+## frontend
